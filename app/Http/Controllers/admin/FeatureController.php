@@ -29,7 +29,8 @@ class FeatureController extends Controller
      */
     public function create()
     {
-        //
+        $idparent = Feature::all()->pluck('title', 'id');
+        return view('admin.feature.create', compact('idparent'));
     }
 
     /**
@@ -40,7 +41,24 @@ class FeatureController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'title' => 'required|max:255'
+          
+
+        ]);
+
+        $Feature = new Feature();
+
+
+
+        try {
+            $Feature = $Feature->create($request->all());
+        } catch (Exception $exception) {
+            return redirect(route('admin.feature'))->with('warning', $exception->getMessage());
+        }
+
+        $msg = "خصوصیت جدید ثبت شد";
+        return redirect(route('admin.feature'))->with('success', $msg);
     }
 
     /**
@@ -62,7 +80,8 @@ class FeatureController extends Controller
      */
     public function edit(Feature $feature)
     {
-        //
+        $idparent = Feature::all()->pluck('title', 'id');
+        return view('admin.feature.edit', compact('feature','idparent'));
     }
 
     /**
@@ -74,7 +93,24 @@ class FeatureController extends Controller
      */
     public function update(Request $request, Feature $feature)
     {
-        //
+        $validatedData = $request->validate([
+            'title' => 'required|max:255'
+          
+
+        ]);
+
+        
+
+
+
+        try {
+            $feature->update($request->all());
+        } catch (Exception $exception) {
+            return redirect(route('admin.feature'))->with('warning', $exception->getMessage());
+        }
+
+        $msg = "خصوصیت ویرایش گردید";
+        return redirect(route('admin.feature'))->with('success', $msg);
     }
 
     /**
@@ -85,6 +121,27 @@ class FeatureController extends Controller
      */
     public function destroy(Feature $feature)
     {
-        //
+        try {
+            $feature->delete();
+        } catch (Exception $exception) {
+            return redirect(route('admin.feature'))->with('warning', $exception->getMessage());
+        }
+
+        $msg = "خصوصیت حذف گردید";
+        return redirect(route('admin.feature'))->with('success', $msg);
     }
+
+
+    public function updatestatus(Feature $feature)
+    {
+        if ($feature->active == 1) {
+            $feature->active = 0;
+        } else {
+            $feature->active = 1;
+        }
+        $feature->save();
+        $msg = "وضعیت تغییر کرد";
+        return redirect(route('admin.feature'))->with('success', $msg);
+    }
+
 }

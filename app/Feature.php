@@ -7,5 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class Feature extends Model
 {
     public $timestamps = false;
-    //protected $fillable = ['title','link','lang','active','idparent','order'];
+    protected $fillable = ['title','description','lang','active','idparent','order','image'];
+
 }

@@ -109,7 +109,7 @@
 
                 <ul class="list-unstyled" data-link="applications">
                     <li>
-                        <a href="Apps.Todo.List.html">
+                        <a href="{{route('admin.product')}}">
                             <i class="flaticon-business"></i> محصول
                         </a>
                     </li>

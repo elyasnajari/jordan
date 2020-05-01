@@ -104,3 +104,12 @@ Route::get('/administrator/feature/edit/{feature}', 'admin\FeatureController@edi
 Route::put('/administrator/feature/update/{feature}', 'admin\FeatureController@update')->name('admin.feature.update');
 Route::get('/administrator/feature/destroy/{feature}', 'admin\FeatureController@destroy')->name('admin.feature.destroy');
 Route::get('/administrator/feature/status/{feature}', 'admin\FeatureController@updatestatus')->name('admin.feature.updatestatus');
+
+//product
+Route::get('/administrator/product', 'admin\ProductController@index')->name('admin.product');
+Route::get('/administrator/product/create', 'admin\ProductController@create')->name('admin.product.create');
+Route::post('/administrator/product/store','admin\ProductController@store')->name('admin.product.store');
+Route::get('/administrator/product/edit/{product}', 'admin\ProductController@edit')->name('admin.product.edit');
+Route::put('/administrator/product/update/{product}', 'admin\ProductController@update')->name('admin.product.update');
+Route::get('/administrator/product/destroy/{product}', 'admin\ProductController@destroy')->name('admin.product.destroy');
+Route::get('/administrator/product/status/{product}', 'admin\ProductController@updatestatus')->name('admin.product.updatestatus');

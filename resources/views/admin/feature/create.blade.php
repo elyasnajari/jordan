@@ -14,9 +14,9 @@
                             <a href="#">محتوا</a>
                         </li>
                         <li class="breadcrumb-item">
-                            <a href="{{route('admin.menu')}}">منو</a>
+                            <a href="{{route('admin.feature')}}">خصوصیت</a>
                         </li>
-                        <li class="breadcrumb-item active" aria-current="page">منو جدید</li>
+                        <li class="breadcrumb-item active" aria-current="page">خصوصیت جدید</li>
                     </ol>
                 </nav>
 
@@ -32,7 +32,7 @@
 
             <div class="card mb-4">
                 <div class="card-body">
-                    <form action="{{route('admin.menu.store')}}" method="POST">
+                    <form action="{{route('admin.feature.store')}}" method="POST">
 
                         @csrf
 
@@ -40,7 +40,7 @@
                         <div class="form-row">
                             <div class="col-md-4 mb-3">
                                 <label for="title">عنوان</label>
-                                <input type="text" class="form-control @error('title') is-invalid @enderror" name="title" placeholder="مثال: خانه " value="{{old('title')}}">
+                                <input type="text" class="form-control @error('title') is-invalid @enderror" name="title" placeholder="مثال: خصوصیت یک " value="{{old('title')}}">
                                 @error('title')
                                 <div class="valid-feedback">{{$message}}
                                 </div>
@@ -49,9 +49,9 @@
                         </div>
                         <div class="form-row">
                             <div class="col-md-4 mb-3">
-                                <label for="link">لینک منو</label>
-                                <input type="text" class="form-control @error('link') is-invalid @enderror" name="link" placeholder="www.test.com/index.php" value="{{old('link')}}">
-                                @error('link')
+                                <label for="link">توضیح</label>
+                                <input type="text" class="form-control @error('description') is-invalid @enderror" name="description" placeholder="خصوصیت را توصیف نمایید" value="{{old('description')}}">
+                                @error('description')
                                 <div class="valid-feedback">{{$message}}
                                 </div>
                                 @enderror
@@ -69,8 +69,8 @@
 
                                     <optgroup label="انتخاب والد منو">
                                     <option value="0">بدون والد - سر شاخه</option>
-                                        @foreach($idparent as $menu_id => $menu_title)
-                                        <option value="{{$menu_id}}">{{$menu_title}}</option>
+                                        @foreach($idparent as $feature_id => $feature_title)
+                                        <option value="{{$feature_id}}">{{$feature_title}}</option>
                                         @endforeach
 
                                     </optgroup>
@@ -102,7 +102,17 @@
                                 @enderror
                             </div>
                         </div>
-
+                        <div class="form-row">
+                            <div class="col-md-4 mb-3">
+                            <label for="order">تصویر شاخص</label>
+                                <span class="input-group-btn">
+                                    <a id="lfm" data-input="image" data-preview="holder" class="btn btn-primary default text-white">
+                                        <i class="glyph-icon flaticon-export"></i> بارگذاری
+                                    </a>
+                                    <input id="image" class="form-control" type="text" name="image">
+                                </span>
+                            </div>
+                        </div>
 
                         <div class="form-row">
                             <div class="col-md-4 mb-3">
@@ -129,6 +139,8 @@
 
                             </div>
                         </div>
+
+                       
 
 
                         <button class="btn btn-primary default " type="submit"> ارسال فرم</button>

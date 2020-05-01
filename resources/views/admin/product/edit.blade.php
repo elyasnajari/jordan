@@ -14,9 +14,9 @@
                             <a href="#">محتوا</a>
                         </li>
                         <li class="breadcrumb-item">
-                            <a href="{{route('admin.feature')}}">خصوصیت</a>
+                            <a href="{{route('admin.article')}}">مقالات</a>
                         </li>
-                        <li class="breadcrumb-item active" aria-current="page">ویرایش خصوصیت</li>
+                        <li class="breadcrumb-item active" aria-current="page"></li>ویرایش</li>
                     </ol>
                 </nav>
 
@@ -32,77 +32,83 @@
 
             <div class="card mb-4">
                 <div class="card-body">
-                <form action="{{route('admin.feature.update', $feature->id)}}" method="POST">
+                <form action="{{route('admin.article.update', $article->id)}}" method="POST">
                         @method('put')
                         @csrf
-
-                    
                         <div class="form-row">
                             <div class="col-md-4 mb-3">
                                 <label for="title">عنوان</label>
-                                <input type="text" class="form-control @error('title') is-invalid @enderror" name="title" value="{{$feature->title}}">
+                                <input type="text" class="form-control @error('title') is-invalid @enderror" name="title"  value="{{$article->title}}">
                                 @error('title')
                                 <div class="valid-feedback">{{$message}}
                                 </div>
                                 @enderror
                             </div>
                         </div>
+
                         <div class="form-row">
                             <div class="col-md-4 mb-3">
-                                <label for="link">توضیح</label>
-                                <input type="text" class="form-control @error('description') is-invalid @enderror" name="description" placeholder="خصوصیت را توصیف نمایید" value="{{$feature->description}}">
-                                @error('description')
+                                <label for="slug">آدرس یکتا</label>
+                                <input type="text" class="form-control @error('slug') is-invalid @enderror" name="slug" value="{{$article->slug}}">
+                                @error('slug')
                                 <div class="valid-feedback">{{$message}}
                                 </div>
                                 @enderror
                             </div>
                         </div>
-                     
 
                         <div class="form-row">
                             <div class="col-md-4 mb-3">
-                                <label for="idparent">والد</label>
+                                <label for="keyword">توصیف صفحه(سئو)</label>
+                                <input type="text" class="form-control @error('keyword') is-invalid @enderror" name="keyword" value="{{$article->keyword}}">
+                                @error('keyword')
+                                <div class="valid-feedback">{{$message}}
+                                </div>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="col-md-12 mb-3">
+                                <label for="descriotion">متن مقاله</label>
+                                <textarea id="editor" class="form-control @error('description') is-invalid @enderror" name="description">{{$article->description}}</textarea>
+
+                                @error('descriotion')
+                                <div class="valid-feedback">{{$message}}
+                                </div>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="col-md-4 mb-3">
+                                <label for="category">موضوع</label>
 
 
-                                <select name="idparent" class="form-control select2-single select2-hidden-accessible" tabindex="-1" aria-hidden="true">
-                                   
+                                <select name="categories[]" class="form-control select2-multiple select2-hidden-accessible" multiple="" tabindex="-1" aria-hidden="true">
+                                    <option label="&nbsp;">&nbsp;</option>
 
-                                    <optgroup label="انتخاب والد منو">
-                                    <option value="0">بدون والد - سر شاخه</option>
-                                        @foreach($idparent as $feature_id => $feature_title)
-                                        <option <?php if($feature->idparent==$feature_id) echo "selected"; ?>
-                                         value="{{$feature_id}}">{{$feature_title}}</option>
+                                    <optgroup label="دسته بندی مقاله">
+                                        @foreach($categories as $cat_id => $cat_title)
+                                        <option value="{{$cat_id}}"
+                                        <?php
+                                         if(in_array($cat_id,$article->categories->pluck('id')->toArray()))
+                                        echo 'selected' ?>
+                                        >{{$cat_title}}</option>
                                         @endforeach
 
                                     </optgroup>
                                 </select>
 
 
-                                @error('idparent')
+                                @error('category')
                                 <div class="valid-feedback">{{$message}}
                                 </div>
                                 @enderror
                             </div>
                         </div>
 
-
-                   
-
-
-                       
-                
-                      
-                       
-                        <div class="form-row">
-                            <div class="col-md-4 mb-3">
-                                <label for="order">اولویت</label>
-                                <input type="text" class="form-control @error('order') is-invalid @enderror" name="order" placeholder="مثال:1" value="{{$feature->order}}">
-                                @error('order')
-                                <div class="valid-feedback">{{$message}}
-                                </div>
-                                @enderror
-                            </div>
-                        </div>
+                        
                         <div class="form-row">
                             <div class="col-md-4 mb-3">
                             <label for="order">تصویر شاخص</label>
@@ -110,45 +116,53 @@
                                     <a id="lfm" data-input="image" data-preview="holder" class="btn btn-primary default text-white">
                                         <i class="glyph-icon flaticon-export"></i> بارگذاری
                                     </a>
-                                    <input id="image" class="form-control" type="text" name="image" src="{{$feature->image}}">
+                                    <input id="image" class="form-control" type="text" name="image" value="{{$article->image}}">
                                 </span>
                             </div>
                         </div>
 
+
                         <div class="form-row">
                             <div class="col-md-4 mb-3">
+
+                                <img id="holder" style="margin-top:15px;max-height:100px;" src="{{$article->image}}">
+                            </div>
+                        </div>
+
+
+
+                        <div class="form-group">
+                            <div class="form-check">
+
                                 <label class="form-check-label" for="lang">زبان
                                 </label>
                                 <select name="lang">
+                                   <?php echo "<option value='$article->lang' selected>$article->lang</option>";  ?>
                                     @include('layouts.lang')
 
                                 </select>
 
+
                             </div>
                         </div>
 
 
-                        <div class="form-row">
-                            <div class="col-md-4 mb-3">
+                        <div class="form-group">
+                            <div class="form-check">
+
                                 <label class="form-check-label" for="active">وضعیت انتشار
                                 </label>
                                 <select name="active">
-                                    <option value="1">فعال</option>
-                                    <option value="0" <?php if($feature->active==0) echo "selected"; ?>>غیرفعال</option>
+                                    <option value="1">انتشار</option>
+                                    <option value="0" <?php if($article->active==0) echo "selected"; ?> >عدم انتشار</option>
                                 </select>
-
-
                             </div>
                         </div>
-
-                       
-
-
+<input type="hidden" name="user_id" value="{{Auth::user()->id}}" >
                         <button class="btn btn-primary default " type="submit"> ارسال فرم</button>
                     </form>
                 </div>
             </div>
-
         </div>
     </div>
 </div>

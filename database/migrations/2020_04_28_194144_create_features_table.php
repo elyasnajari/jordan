@@ -17,8 +17,8 @@ class CreateFeaturesTable extends Migration
             $table->id();
             $table->string('title');
             $table->integer('idparent');
-            $table->string('description');
-            $table->string('image');
+            $table->string('description')->nullable();
+            $table->string('image')->nullable();
             $table->integer('order')->nullable();
             $table->tinyInteger('active');
             $table->string('lang',3);
